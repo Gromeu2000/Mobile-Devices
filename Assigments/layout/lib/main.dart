@@ -1,27 +1,33 @@
 import 'package:flutter/material.dart';
 
-class Screen extends StatelessWidget {
+void main() {
+  runApp(Screen1());
+}
+
+class Screen1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp (
+    return MaterialApp(
       home: Scaffold(
-        body : Column(
+        body: Column(
           children: <Widget>[
             Container(
-              height: 50,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/Devices.jpg'),
-                ),
+              color: Colors.white,
+              height: 325,
+              child: Image.asset('assets/Devices.jpg'),
+            ),
+            Expanded(
+               child: Container(
+                height: 100,
+                color: Colors.white,
               ),
             ),
           ],
         ),
       ),
     );
+
   }
 }
 
-void main() {
-  runApp(Screen());
-}
+
