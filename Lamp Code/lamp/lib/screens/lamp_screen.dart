@@ -86,7 +86,7 @@ class _Title extends StatelessWidget {
             fontSize: 22,
           ),
         ),
-        Spacer(),
+       Spacer(),
         FloatingActionButton(
           mini: true,
           onPressed: () {},
