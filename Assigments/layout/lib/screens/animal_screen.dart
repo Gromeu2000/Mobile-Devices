@@ -7,13 +7,60 @@ class AnimalScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-          children: [
-            Expanded(flex: 5, child: AnimalPreview()),
-            Expanded(flex: 3, child: AnimalInfo()),
-            Expanded(flex: 2, child: CatData()),
-          ],
-        ),
+        body: SafeArea(
+          child: Stack(
+            children: [
+               Column(
+                children: [
+                  Expanded(flex: 5, child: AnimalPreview()),
+                  Expanded(flex: 3, child: AnimalInfo()),
+                  Expanded(flex: 2, child: CatInteraction()),
+                ],
+              ),
+              Align(
+              alignment: Alignment.center,
+              child: CatData(),
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8, top: 30),
+                  child: BackButton(),
+                ),
+              ),
+              Align(
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8, top: 30),
+                  child: Logout(),
+                ),
+              ),
+            ],
+          ),
+       ),   
+    );
+  }
+}
+
+//GENERAL BUTTONS-----------------------
+class BackButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Icon(
+      Icons.west_outlined,
+      color: Colors.grey[600],
+      size: 30
+    );
+  }
+}
+
+class Logout extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Icon(
+      Icons.logout,
+      color: Colors.grey[600],
+      size: 30
     );
   }
 }
@@ -44,7 +91,7 @@ class AnimalPreview extends StatelessWidget {
 class Photo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Image.asset('assets/dev22.png');
+    return Image.asset('assets/cat.png');
   }
 }
 
@@ -120,8 +167,8 @@ class OwnerInfo extends StatelessWidget {
           'May 25, 2019',
           style: TextStyle(
             fontFamily: 'Roboto',
-            fontWeight: FontWeight.w400,
-            color: Colors. grey[400],
+            fontWeight: FontWeight.w500,
+            color: Colors. grey[500],
             fontSize: 11
           ),
         ),
@@ -149,8 +196,8 @@ class SubOwnerInfo extends StatelessWidget {
       'Owner',
       style: TextStyle(
           fontFamily: 'Roboto',
-           fontWeight: FontWeight.w400,
-           color: Colors. grey[400],
+           fontWeight: FontWeight.w500,
+           color: Colors. grey[500],
            fontSize: 11
       ),
     ),
@@ -170,9 +217,9 @@ class OwnerDescription extends StatelessWidget {
       "have the opportunity to take the cat with me. I am "
       "looking for good people who will shelter my Sola.",
       style: TextStyle(
-            fontFamily: 'Roboto',
+            fontFamily: 'Noto Serif',
             fontWeight: FontWeight.w500,
-            color: Colors. grey[500],
+            color: Colors. grey[600],
             fontSize: 12,
       ),
       ),
@@ -183,7 +230,7 @@ class OwnerDescription extends StatelessWidget {
 
 // 3/3 OF SCREEN------------------------------------
 
-class CatData extends StatelessWidget {
+class CatInteraction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -197,13 +244,15 @@ class CatData extends StatelessWidget {
      child: Row(
        children: [
          Like(),
-        //  CatSlider(width: 70, height: 60, color: Color.fromRGBO(48, 96, 96, 1), radius: 20),
+        Adopt(),
        ],
+mainAxisAlignment: MainAxisAlignment.spaceEvenly,
      ),    
     );
   }
 }
 
+//LIKE BUTTON------------
 
 class Like extends StatelessWidget {
   @override
@@ -216,11 +265,176 @@ class Like extends StatelessWidget {
         borderRadius: BorderRadius.all(
           Radius.circular(20)
           ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black87,
+              offset: Offset(4,4),
+              blurRadius: 9,
+            ),
+          ],
       ),
       child: Icon(
         Icons.favorite_outline,
         color: Colors.white,
       )
+    );
+  }
+}
+
+//ADOPT BUTTON---------------
+
+class Adopt extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+       width: 200,
+        height: 60,
+      decoration: BoxDecoration(
+        color: Color.fromRGBO(48, 96, 96, 1),
+        borderRadius: BorderRadius.all(
+          Radius.circular(20)
+          ),
+           boxShadow: [
+            BoxShadow(
+              color: Colors.black87,
+              offset: Offset(4,4),
+              blurRadius: 9,
+            ),
+          ],
+      ),
+        child: Center(
+          child: Text(
+            'Adoption',
+            style: TextStyle(
+              fontFamily: 'Roboto',
+              fontWeight: FontWeight.w700,
+              color: Colors.white,
+               fontSize: 15,
+            ),
+          ),
+        ),
+    );
+  }
+}
+
+
+
+
+//MID SCREEN-------------------------
+class CatData extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(left: 20, right: 20),
+      width: 450,
+        height: 150,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(
+          Radius.circular(35)
+        ),
+         boxShadow: [
+            BoxShadow(
+              color: Colors.black54,
+              offset: Offset(2,2),
+              blurRadius: 15,
+            ),
+          ],
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          NameGender(),
+          SizedBox(height: 5),
+          TypeAge(),
+          SizedBox(height: 10),
+          Location(),
+        ],
+      ),
+    );
+  }
+}
+
+
+
+// FIRST ROW----------------------
+class NameGender extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          'Sola',
+          style: TextStyle(
+            fontFamily: 'Mukata',
+            fontWeight: FontWeight.w700,
+            color: Colors.grey[700],
+             fontSize: 30,
+          ),
+        ),
+        Image.asset('assets/gender.png'),
+      ],
+    );
+  }
+}
+
+
+// SECOND ROW-------------------
+class TypeAge extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          'Abyssinian cat',
+          style: TextStyle(
+            fontFamily: 'Roboto',
+            fontWeight: FontWeight.w700,
+            color: Colors.grey[600],
+             fontSize: 15,
+          )
+        ),
+        Text(
+          '2 years old',
+           style: TextStyle(
+            fontFamily: 'Roboto',
+            fontWeight: FontWeight.w700,
+            color: Colors.grey[600],
+             fontSize: 15,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+
+
+//THIRD ROW--------------------------
+class Location extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+
+    return Row(
+      children: [
+        Icon(
+          Icons.location_on,
+           color: Color.fromRGBO(48, 96, 96, 1),
+           size: 20,
+        ),
+        SizedBox(width: 5),
+        Text(
+          '5 Bulvarno-Kudriavska Street, Kyiv',
+           style: TextStyle(
+            fontFamily: 'Roboto',
+            fontWeight: FontWeight.w500,
+            color: Colors.grey[350],
+             fontSize: 15,
+          ),
+        ),
+      ],
     );
   }
 }
