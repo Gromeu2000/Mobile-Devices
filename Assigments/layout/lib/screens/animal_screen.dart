@@ -367,7 +367,7 @@ class NameGender extends StatelessWidget {
         Text(
           'Sola',
           style: TextStyle(
-            fontFamily: 'Mukata',
+            fontFamily: 'Quicksand',
             fontWeight: FontWeight.w700,
             color: Colors.grey[700],
              fontSize: 30,
@@ -378,7 +378,7 @@ class NameGender extends StatelessWidget {
     );
   }
 }
-
+ 
 
 // SECOND ROW-------------------
 class TypeAge extends StatelessWidget {
@@ -391,7 +391,7 @@ class TypeAge extends StatelessWidget {
           'Abyssinian cat',
           style: TextStyle(
             fontFamily: 'Roboto',
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.w400,
             color: Colors.grey[600],
              fontSize: 15,
           )
@@ -400,7 +400,7 @@ class TypeAge extends StatelessWidget {
           '2 years old',
            style: TextStyle(
             fontFamily: 'Roboto',
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.w400,
             color: Colors.grey[600],
              fontSize: 15,
           ),
@@ -429,7 +429,7 @@ class Location extends StatelessWidget {
           '5 Bulvarno-Kudriavska Street, Kyiv',
            style: TextStyle(
             fontFamily: 'Roboto',
-            fontWeight: FontWeight.w500,
+            fontWeight: FontWeight.w400,
             color: Colors.grey[350],
              fontSize: 15,
           ),

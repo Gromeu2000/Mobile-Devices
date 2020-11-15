@@ -7,6 +7,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Layout Assigment',
+      debugShowCheckedModeBanner: false,
       home: AnimalScreen(),
     );
   }
