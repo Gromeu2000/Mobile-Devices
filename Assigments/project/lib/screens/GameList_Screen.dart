@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'AddGame_Screen.dart';
+import 'GameInfo_Screen.dart';
 
 class GameListScreen extends StatefulWidget {
   @override
@@ -10,7 +11,7 @@ class GameListScreen extends StatefulWidget {
 }
 
 class _GameListScreenState extends State<GameListScreen> {
-
+  String order = 'Game';
   Widget _buildErrorPage(String message) {
     return Scaffold(
       body: Center(
@@ -31,13 +32,49 @@ class _GameListScreenState extends State<GameListScreen> {
   }
 
   Widget _buildGameListPage(QuerySnapshot snapshot) {
-    final allgames = FirebaseFirestore.instance.collection('Game List');
+    final allgames = FirebaseFirestore.instance.collection('Game List 2');
     final docs = snapshot.docs;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
         title: Text('Game Wishlist'),
         actions: [
+          IconButton(
+            icon: Icon(Icons.filter_list_rounded),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  title: Text('Filter'),
+                  content: Text('Which order do you want to set'),
+                  actions: [
+                    FlatButton(
+                      onPressed: () {
+                        setState(() {
+                          order = 'Game';
+                        });
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        "Game (Alphabetical)",
+                      ),
+                    ),
+                    FlatButton(
+                      onPressed: () {
+                        setState(() {
+                          order = 'Developer';
+                        });
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        "Developer (Alphabetical)",
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
           IconButton(
             icon: Icon(Icons.delete),
             onPressed: () {
@@ -92,54 +129,113 @@ class _GameListScreenState extends State<GameListScreen> {
                 itemCount: docs.length,
                 itemBuilder: (context, int index) {
                   final game = docs[index];
-                  return ListTile(
-                    title: Text(
-                      game['Game'],
-                      style: TextStyle(
-                        fontSize: 17,
-                        decoration: game['Played']
-                            //Icon Played
-                            ? TextDecoration.underline
-                            : TextDecoration.none,
-                      ),
-                    ),
-                    leading: Image.network(game['Icon']),
-                    trailing: game['Played']
-                        ? Icon(Icons.videogame_asset_rounded)
-                        : null,
-                    subtitle: Text(game['Developer']),
-                    onTap: () {
-                      allgames.doc(game.id).update({'Played': !game['Played']});
-                    },
-                    onLongPress: () {
-                      showDialog(
-                        context: context,
-                        builder: (_) => AlertDialog(
-                          title: Text('Delete ${game['Game']}?'),
-                          content: Text(
-                              'Do you want to delete ${game['Game']} from the list?'),
-                          actions: [
-                            FlatButton(
-                              onPressed: () {
-                                allgames.doc(game.id).delete();
-                                Navigator.pop(context);
-                              },
-                              child: Text(
-                                "Yes",
-                              ),
-                            ),
-                            FlatButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Text(
-                                "No",
-                              ),
-                            ),
-                          ],
+                  return GestureDetector(
+                    onDoubleTap: () {
+                      allgames.doc(game.id);
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => GameInfoScreen(),
                         ),
                       );
                     },
+                    child: ListTile(
+                      title: Row(
+                        children: [
+                          Text(
+                            game['Game'],
+                            style: TextStyle(
+                              fontSize: 17,
+                              decoration: game['Played']
+                                  //Icon Played
+                                  ? TextDecoration.underline
+                                  : TextDecoration.none,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            game['Grade'].toString(),
+                            style: TextStyle(
+                              fontSize: 19,
+                              decorationThickness: 10,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          game['Fav']
+                              ? Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                )
+                              : Icon(Icons.star, color: Colors.green[50]),
+                        ],
+                      ),
+                      leading: Image.network(game['Icon']),
+                      trailing: game['Played']
+                          ? Icon(
+                              Icons.videogame_asset_rounded,
+                              color: Colors.green,
+                            )
+                          : null,
+                      subtitle: Row(
+                        children: [
+                          Text(game['Developer']),
+                          SizedBox(
+                            width: 2,
+                          ),
+                          Text("/"),
+                          SizedBox(
+                            width: 2,
+                          ),
+                          Text(game['Platform']),
+                          SizedBox(
+                            width: 2,
+                          ),
+                          Text("/"),
+                          Text(game['Time Spent'].toString()),
+                          SizedBox(
+                            width: 2,
+                          ),
+                          Text('hours')
+                        ],
+                      ),
+                      onTap: () {
+                        allgames
+                            .doc(game.id)
+                            .update({'Played': !game['Played']});
+                      },
+                      onLongPress: () {
+                        showDialog(
+                          context: context,
+                          builder: (_) => AlertDialog(
+                            title: Text('Delete ${game['Game']}?'),
+                            content: Text(
+                                'Do you want to delete ${game['Game']} from the list?'),
+                            actions: [
+                              FlatButton(
+                                onPressed: () {
+                                  allgames.doc(game.id).delete();
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  "Yes",
+                                ),
+                              ),
+                              FlatButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  "No",
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                   );
                 },
               ),
@@ -168,7 +264,6 @@ class _GameListScreenState extends State<GameListScreen> {
                     onPressed: () =>
                         launch('https://store.steampowered.com/?l=spanish'),
                   ),
-
                   Padding(
                     padding: const EdgeInsets.only(left: 100),
                     child: IconButton(
@@ -197,9 +292,9 @@ class _GameListScreenState extends State<GameListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final allgames = FirebaseFirestore.instance.collection('Game List');
+    final allgames = FirebaseFirestore.instance.collection('Game List 2');
     return StreamBuilder(
-      stream: allgames.orderBy('Game').snapshots(),
+      stream: allgames.orderBy(order).snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           return _buildErrorPage(snapshot.error.toString());

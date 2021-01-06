@@ -13,31 +13,44 @@ class _AddGame_ScreenState extends State<AddGame_Screen> {
   TextEditingController _game_controller;
   TextEditingController _developer_controller;
   TextEditingController _icon_controller;
+  TextEditingController _platform_controller;
+  TextEditingController _grade_controller;
+  TextEditingController _time_controller;
 
   @override
   void initState() {
     _game_controller = TextEditingController();
     _developer_controller = TextEditingController();
     _icon_controller = TextEditingController();
+    _platform_controller = TextEditingController();
+    _grade_controller = TextEditingController();
+    _time_controller = TextEditingController();
+
     super.initState();
   }
 
   @override
   void dispose() {
     _game_controller.dispose();
-   _developer_controller.dispose();
-   _icon_controller.dispose();
+    _developer_controller.dispose();
+    _icon_controller.dispose();
+    _platform_controller.dispose();
+    _grade_controller.dispose();
+    _time_controller.dispose();
+
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final db = FirebaseFirestore.instance;
     return Scaffold(
       backgroundColor: Colors.green[50],
       appBar: AppBar(
         backgroundColor: Colors.green,
         title: Text('New Game'),
       ),
+      resizeToAvoidBottomPadding: false,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -84,7 +97,9 @@ class _AddGame_ScreenState extends State<AddGame_Screen> {
                     ),
                   ),
                 ),
+
                 SizedBox(height: 10),
+
                 Padding(
                   padding: const EdgeInsets.only(left: 25, right: 50),
                   child: Container(
@@ -106,8 +121,7 @@ class _AddGame_ScreenState extends State<AddGame_Screen> {
             ),
           ),
 
-
-           // ------------------------------------------------GameDeveloper
+          // ------------------------------------------------GameDeveloper
           Expanded(
             flex: 3,
             child: Column(
@@ -144,8 +158,7 @@ class _AddGame_ScreenState extends State<AddGame_Screen> {
             ),
           ),
 
-
-            // ------------------------------------------------URL Icon
+          // ------------------------------------------------URL Icon
           Expanded(
             flex: 3,
             child: Column(
@@ -182,6 +195,43 @@ class _AddGame_ScreenState extends State<AddGame_Screen> {
             ),
           ),
 
+           // ------------------------------------------------Platform
+          Expanded(
+            flex: 3,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 25),
+                  child: Text(
+                    'Platform',
+                    style: TextStyle(
+                      fontSize: 22,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.only(left: 25, right: 50),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.green[100],
+                    ),
+                    child: TextField(
+                      textAlign: TextAlign.center,
+                      cursorColor: Colors.green[800],
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "Write your game's platform here",
+                      ),
+                      controller: _platform_controller,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
           //---------------------------------------------------DOWN BAR
           Expanded(
             flex: 1,
@@ -191,11 +241,17 @@ class _AddGame_ScreenState extends State<AddGame_Screen> {
                 backgroundColor: Colors.green,
                 foregroundColor: Colors.white,
                 onPressed: () {
-                  // allgames.add({
-                  //   'Game': _controller.text,
-                  //   'Played': false,
-                  // });
-                  // _controller.clear();
+                  db.collection('Game List 2').add({
+
+                    'Game': _game_controller.text,
+                    'Developer': _developer_controller.text,
+                    'Icon': _icon_controller.text,
+                    'Platform': _platform_controller.text,
+                    'Grade': 0.0,
+                    'Time Spent': 0.0,
+                    'Played': false,
+                    'Fav': false,
+                  });
 
                   Navigator.of(context).push(
                     MaterialPageRoute(
@@ -213,4 +269,3 @@ class _AddGame_ScreenState extends State<AddGame_Screen> {
     );
   }
 }
-
